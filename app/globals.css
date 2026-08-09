@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Dark is the committed default. Light is a separately designed palette, not an
+   inversion: the accent has to change outright, because #ffb35c sits at 1.7:1
+   on white. Both themes are driven by prefers-color-scheme — there is no
+   toggle, the visitor's OS has already answered the question. */
+@theme {
+  --color-ink: #0a0c0e;
+  --color-surface: #101316;
+  --color-line: #1e242a;
+  --color-line-strong: #2b333a;
+  --color-text: #e9ecef;
+  --color-muted: #98a2ac;
+  --color-accent: #ffb35c;
+  --color-on-accent: #0a0c0e;
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-ink: #f6f7f8;
+    --color-surface: #ffffff;
+    --color-line: #e3e6e9;
+    --color-line-strong: #c8ced4;
+    --color-text: #14181c;
+    --color-muted: #59626b;
+    --color-accent: #8a4b00;
+    --color-on-accent: #ffffff;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Scroll reveal with no JavaScript and no gating: browsers without
+   animation-timeline support render the content at full opacity. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-fade linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 20%;
+    }
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Recruiters save pages to PDF. Force the light palette, drop the card fills,
+   and print link targets so the paper copy stays verifiable. */
+@media print {
+  :root {
+    --color-ink: #ffffff;
+    --color-surface: #ffffff;
+    --color-line: #d4d8dc;
+    --color-line-strong: #9aa2aa;
+    --color-text: #000000;
+    --color-muted: #3d444b;
+    --color-accent: #7a4200;
+    --color-on-accent: #ffffff;
+  }
+
+  @page {
+    margin: 16mm;
+  }
+
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.7em;
+    word-break: break-all;
+  }
+
+  article,
+  figure,
+  section {
+    break-inside: avoid;
+  }
+}

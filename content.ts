@@ -97,7 +97,7 @@ export const projects: Project[] = [
       "Authentication, vote integrity controls, live result tabulation",
     ],
     tags: ["Python", "Django", "PostgreSQL"],
-    links: [{ label: "Live product", href: "https://awards.lssabu.org" }],
+    links: [{ label: "Live product", href: "https://awards.lawsocietyabu.org" }],
   },
 ];
 

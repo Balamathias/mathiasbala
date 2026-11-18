@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { site, person } from "@/content";
+import { Spotlight } from "@/components/Spotlight";
 import "./globals.css";
 
 const personSchema = {
@@ -18,18 +19,24 @@ const personSchema = {
   },
 };
 
-const plexSans = IBM_Plex_Sans({
+const geist = Geist({
   subsets: ["latin"],
-  weight: ["400", "600"],
   display: "swap",
-  variable: "--font-plex-sans",
+  variable: "--font-geist",
 });
 
-const plexMono = IBM_Plex_Mono({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400"],
   display: "swap",
-  variable: "--font-plex-mono",
+  variable: "--font-geist-mono",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+  display: "swap",
+  variable: "--font-instrument-serif",
 });
 
 export const metadata: Metadata = {
@@ -53,8 +60,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f7f8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0c0e" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f6f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#08090b" },
   ],
   colorScheme: "dark light",
 };
@@ -65,8 +72,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+    >
       <body>
+        <div aria-hidden className="backdrop" />
+        <Spotlight />
+        <div aria-hidden className="grain" />
         {children}
         <script
           type="application/ld+json"

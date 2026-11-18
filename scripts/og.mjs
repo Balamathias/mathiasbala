@@ -8,9 +8,16 @@
 import { writeFile } from "node:fs/promises";
 import { ImageResponse } from "next/og.js";
 import React from "react";
-import { hero } from "../content.ts";
+import { hero, site } from "../content.ts";
 
 const h = (style, children) => React.createElement("div", { style }, children);
+
+const INK = "#08090b";
+const TEXT = "#eceef0";
+const MUTED = "#8f97a1";
+const ACCENT = "#ffb35c";
+const SIGNAL = "#4ade80";
+const LINE = "#1a1e24";
 
 const card = h(
   {
@@ -18,49 +25,38 @@ const card = h(
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    background: "#0a0c0e",
-    color: "#e9ecef",
-    padding: "88px 96px",
+    justifyContent: "space-between",
+    background: INK,
+    backgroundImage: `linear-gradient(to right, ${LINE} 1px, transparent 1px), linear-gradient(to bottom, ${LINE} 1px, transparent 1px)`,
+    backgroundSize: "64px 64px",
+    color: TEXT,
+    padding: "72px 88px",
     fontFamily: "sans-serif",
   },
   [
     h(
-      {
-        key: "name",
-        fontSize: 88,
-        fontWeight: 600,
-        letterSpacing: "-0.02em",
-        lineHeight: 1,
-        display: "flex",
-      },
-      hero.name,
+      { key: "top", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 24, color: MUTED },
+      [
+        h({ key: "w", display: "flex" }, site.wordmark),
+        h({ key: "s", display: "flex", alignItems: "center", gap: 14, color: TEXT }, [
+          h({ key: "dot", width: 14, height: 14, borderRadius: 999, background: SIGNAL }),
+          h({ key: "t", display: "flex" }, hero.badge),
+        ]),
+      ],
     ),
-    h(
-      {
-        key: "summary",
-        marginTop: 32,
-        fontSize: 36,
-        color: "#98a2ac",
-        lineHeight: 1.35,
-        maxWidth: 920,
-        display: "flex",
-      },
-      hero.summary,
-    ),
-    h({ key: "rule", display: "flex", marginTop: 56 }, [
-      h({ key: "bar", width: 6, background: "#ffb35c" }),
+    h({ key: "mid", display: "flex", flexDirection: "column" }, [
       h(
-        {
-          key: "label",
-          paddingLeft: 24,
-          fontSize: 28,
-          color: "#ffb35c",
-          display: "flex",
-          alignItems: "center",
-        },
-        "Available for remote contract work · WAT / UTC+1",
+        { key: "name", display: "flex", fontSize: 128, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 0.95 },
+        [h({ key: "n", display: "flex" }, hero.name), h({ key: "p", display: "flex", color: ACCENT }, ".")],
       ),
+      h(
+        { key: "summary", display: "flex", marginTop: 36, fontSize: 34, color: MUTED, lineHeight: 1.35, maxWidth: 940 },
+        hero.summary,
+      ),
+    ]),
+    h({ key: "bottom", display: "flex", alignItems: "center", gap: 18, fontSize: 24, color: ACCENT }, [
+      h({ key: "bar", width: 48, height: 3, background: ACCENT }),
+      h({ key: "z", display: "flex" }, `${site.url.replace("https://", "")}  ·  WAT / UTC+1  ·  ${hero.credential}`),
     ]),
   ],
 );

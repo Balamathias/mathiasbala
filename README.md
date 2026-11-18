@@ -1,7 +1,24 @@
 # mathiasbala.com
 
 Single-page proof-of-work site. Next.js App Router, TypeScript, Tailwind CSS,
-static export. No CMS, no database, no API routes, no analytics.
+static export. No CMS, no database, no API routes, no analytics, no runtime
+dependencies beyond React.
+
+The design language is "blueprint + observability": a masked grid backdrop,
+crop-mark panels, live status, and an illustrative request trace. Type is Geist
+Sans / Geist Mono with Instrument Serif italic for one accent phrase per
+heading.
+
+Small client islands add the interactive details; everything else is
+server-rendered and readable without JavaScript:
+
+- **Top bar** with active-section tracking and a live WAT clock
+- **Command palette** — `⌘K`, `Ctrl+K`, or `/`
+- **Time-zone overlap strip** computed from the visitor's zone and `workHours`
+  in `content.ts` (set those to your real hours)
+- **Count-up metrics** (final values are in the HTML)
+- **Interactive architecture diagram** with path toggles and a node inspector
+- **Copy-email button** and toast, plus a cursor spotlight on fine pointers
 
 The page follows the visitor's OS theme via `prefers-color-scheme`. There is no
 toggle. Dark and light are two separately designed palettes rather than one
@@ -91,17 +108,19 @@ If the registrar supports ALIAS or ANAME records at the apex, use
 
 ## Performance notes
 
-The page is text and one inline SVG, so there are no images to optimize. All
+The page is text and inline SVG, so there are no images to optimize. All
+motion is CSS (keyframes, scroll-driven `animation-timeline`, and a registered
+`@property` clock for the trace) and is disabled under
+`prefers-reduced-motion`. All
 content is in the server-rendered HTML — nothing waits on JavaScript to appear.
 The scroll reveal uses CSS `animation-timeline: view()`, which degrades to
 static content in browsers that don't support it, and is disabled under
 `prefers-reduced-motion`.
 
-Over the wire: about 159 KB brotli excluding fonts, of which ~7 KB is the HTML
-that paints the whole page. Fonts add roughly 50 KB, preloaded with
-`display: swap` so text renders before they land.
+Fonts are self-hosted by `next/font` and preloaded with `display: swap` so text
+renders before they land.
 
 There is also a print stylesheet. Recruiters save profiles to PDF, and without
 it the dark background prints as a black rectangle; the print rules force the
-light palette and append link targets after each anchor so the paper copy stays
-verifiable.
+light palette, hide the top bar, palette, grid and grain, and append link
+targets after each anchor so the paper copy stays verifiable.
